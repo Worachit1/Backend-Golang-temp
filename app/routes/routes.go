@@ -40,5 +40,6 @@ func Router(app *gin.Engine) {
 	// Define groups of routes under /api/v1
 	Product(apiV1.Group("/products"))
 	User(apiV1.Group("/users"))
+	Student(apiV1.Group("/students"))
 
 }

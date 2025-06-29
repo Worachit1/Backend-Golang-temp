@@ -1,4 +1,4 @@
-package student
+package registration
 
 import (
 	"app/app/request"
@@ -9,7 +9,7 @@ import (
 )
 
 func (ctl *Controller) Create(ctx *gin.Context) {
-	body := request.CreateStudent{}
+	body := request.CreateRegistration{}
 
 	if err := ctx.Bind(&body); err != nil {
 		logger.Errf(err.Error())
@@ -32,14 +32,14 @@ func (ctl *Controller) Create(ctx *gin.Context) {
 }
 
 func (ctl *Controller) Update(ctx *gin.Context) {
-	ID := request.GetByIDStudent{}
+	ID := request.GetByIDRegistration{}
 	if err := ctx.BindUri(&ID); err != nil {
 		logger.Errf(err.Error())
 		response.BadRequest(ctx, err.Error())
 		return
 	}
 
-	body := request.UpdateStudent{}
+	body := request.UpdateRegistration{}
 	if err := ctx.Bind(&body); err != nil {
 		logger.Errf(err.Error())
 		response.BadRequest(ctx, err.Error())
@@ -61,7 +61,7 @@ func (ctl *Controller) Update(ctx *gin.Context) {
 }
 
 func (ctl *Controller) List(ctx *gin.Context) {
-	req := request.ListStudent{}
+	req := request.ListRegistration{}
 	if err := ctx.Bind(&req); err != nil {
 		logger.Errf(err.Error())
 		response.BadRequest(ctx, err.Error())
@@ -94,7 +94,7 @@ func (ctl *Controller) List(ctx *gin.Context) {
 }
 
 func (ctl *Controller) Get(ctx *gin.Context) {
-	ID := request.GetByIDStudent{}
+	ID := request.GetByIDRegistration{}
 	if err := ctx.BindUri(&ID); err != nil {
 		logger.Errf(err.Error())
 		response.BadRequest(ctx, err.Error())
@@ -111,7 +111,7 @@ func (ctl *Controller) Get(ctx *gin.Context) {
 }
 
 func (ctl *Controller) Delete(ctx *gin.Context) {
-	ID := request.GetByIDStudent{}
+	ID := request.GetByIDRegistration{}
 	if err := ctx.BindUri(&ID); err != nil {
 		logger.Errf(err.Error())
 		response.BadRequest(ctx, err.Error())

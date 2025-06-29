@@ -1,9 +1,9 @@
 package request
 
 type CreateStudent struct {
-	First_name     string `json:"first_name"`
-	Last_name      string `json:"last_name"`
-	Student_number string `json:"student_number"`
+	FirstName     string `json:"first_name"`
+	LastName      string `json:"last_name"`
+	StudentNumber string `json:"student_number"`
 }
 
 type UpdateStudent struct {

@@ -1,4 +1,4 @@
-package product
+package activity
 
 import "github.com/uptrace/bun"
 
@@ -9,7 +9,7 @@ type Controller struct {
 
 func NewController(db *bun.DB) *Controller {
 	return &Controller{
-		Name:    `product-ctl`,
+		Name:    `activity-ctl`,
 		Service: NewService(db),
 	}
 }

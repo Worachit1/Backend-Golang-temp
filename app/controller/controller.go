@@ -1,16 +1,16 @@
 package controller
 
 import (
-	"app/app/controller/product"
+	"app/app/controller/activity"
+	"app/app/controller/registration"
 	"app/app/controller/student"
-	"app/app/controller/user"
 	"app/config"
 )
 
 type Controller struct {
-	ProductCtl *product.Controller
-	UserCtl    *user.Controller
-	StudentCtl *student.Controller
+	StudentCtl      *student.Controller
+	ActivityCtl     *activity.Controller
+	RegistrationCtl *registration.Controller
 
 	// Other controllers...
 }
@@ -19,9 +19,9 @@ func New() *Controller {
 	db := config.GetDB()
 	return &Controller{
 
-		ProductCtl: product.NewController(db),
-		UserCtl:    user.NewController(db),
-		StudentCtl: student.NewController(db),
+		StudentCtl:      student.NewController(db),
+		ActivityCtl:     activity.NewController(db),
+		RegistrationCtl: registration.NewController(db),
 
 		// Other controllers...
 	}

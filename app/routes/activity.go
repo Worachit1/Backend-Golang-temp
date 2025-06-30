@@ -14,7 +14,7 @@ func Activity(router *gin.RouterGroup) {
 	activity := router.Group("")
 	{
 		activity.POST("/create", ctl.ActivityCtl.Create)
-		activity.PUT("/:id", ctl.ActivityCtl.Update)
+		activity.PATCH("/:id", ctl.ActivityCtl.Update)
 		activity.GET("/list", ctl.ActivityCtl.List)
 		activity.GET("/:id", ctl.ActivityCtl.Get)
 		activity.DELETE("/:id", ctl.ActivityCtl.Delete)

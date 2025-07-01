@@ -9,19 +9,32 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *Service) Create(ctx context.Context, req request.CreateStudent) (*model.Student, bool, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, false, err
+	}
 
 	m := &model.Student{
 		FirstName:     req.FirstName,
 		LastName:      req.LastName,
 		StudentNumber: req.StudentNumber,
+		Password:      string(bytes),
 	}
+	m.SetCreatedNow() // Set created_at and updated_at if your model supports it
 
-	_, err := s.db.NewInsert().Model(m).Exec(ctx)
-
-	return m, false, err
+	_, err = s.db.NewInsert().Model(m).Returning("*").Exec(ctx)
+	if err != nil {
+		if strings.Contains(err.Error(), "duplicate key value") {
+			return nil, true, errors.New("student number already exists")
+		}
+		return nil, false, err
+	}
+	return m, false, nil
 }
 
 func (s *Service) Update(ctx context.Context, req request.UpdateStudent, id request.GetByIDStudent) (*model.Student, bool, error) {

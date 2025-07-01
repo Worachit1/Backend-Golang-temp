@@ -41,5 +41,7 @@ func Router(app *gin.Engine) {
 	Student(apiV1.Group("/students"))
 	Activity(apiV1.Group("/activities"))
 	Registration(apiV1.Group("/registrations"))
+	Login(apiV1.Group("/login"))
+	Logout(apiV1.Group("/logout"))
 
 }

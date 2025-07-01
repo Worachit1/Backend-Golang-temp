@@ -7,9 +7,9 @@ func Models() []any {
 		// (*model.Permission)(nil),
 		// (*model.RolePermission)(nil),
 		// (*model.Role)(nil),
-		(*model.Student)(nil),
+		// (*model.Student)(nil),
 		(*model.Activity)(nil),
-		(*model.Registration)(nil),
+		// (*model.Registration)(nil),
 	}
 }
 

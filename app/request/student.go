@@ -4,6 +4,7 @@ type CreateStudent struct {
 	FirstName     string `json:"first_name"`
 	LastName      string `json:"last_name"`
 	StudentNumber string `json:"student_number"`
+	Password      string `json:"password"`
 }
 
 type UpdateStudent struct {

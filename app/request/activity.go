@@ -1,11 +1,9 @@
 package request
 
-import "time"
-
 type CreateActivity struct {
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	ReleaseDate time.Time `json:"release_date"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	ReleaseDate int64  `json:"release_date"`
 }
 
 type UpdateActivity struct {

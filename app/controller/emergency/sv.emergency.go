@@ -211,26 +211,8 @@ func (s *Service) ListEmergencies(ctx context.Context, req request.ListEmergency
 		return nil, 0, err
 	}
 
-	// Sorting whitelist
-	allowedSortBy := map[string]bool{
-		"id": true, "type": true, "status": true, "title": true, "created_at": true, "updated_at": true,
-	}
-	allowedOrderBy := map[string]bool{
-		"asc":  true,
-		"desc": true,
-	}
-
-	sortBy := "id"
-	if allowedSortBy[strings.ToLower(req.SortBy)] {
-		sortBy = strings.ToLower(req.SortBy)
-	}
-
-	orderBy := "asc"
-	if allowedOrderBy[strings.ToLower(req.OrderBy)] {
-		orderBy = strings.ToLower(req.OrderBy)
-	}
-
-	order := fmt.Sprintf("e.%s %s", sortBy, orderBy)
+	// Order by created_at DESC (latest on top)
+	order := "e.created_at DESC"
 
 	// Final query with order + pagination
 	err = query.Order(order).Limit(req.Size).Offset(offset).Scan(ctx, &m)
@@ -240,6 +222,7 @@ func (s *Service) ListEmergencies(ctx context.Context, req request.ListEmergency
 
 	return m, count, nil
 }
+
 
 
 func (s *Service) GetByUserIDEmergency(ctx context.Context, req request.GetByUserIDEmergency) ([]model.Emergency, error) {

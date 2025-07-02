@@ -18,7 +18,7 @@ func (ctl *Controller) Login(ctx *gin.Context) {
 		return
 	}
 
-	user, err := ctl.Service.Login(ctx, req.StudentNumber, req.Password)
+	user, err := ctl.Service.Login(ctx, req.Email, req.Password)
 	if err != nil {
 		response.Unauthorized(ctx, err.Error())
 		return
@@ -26,8 +26,8 @@ func (ctl *Controller) Login(ctx *gin.Context) {
 
 	// สร้าง token
 	claims := jwt5.MapClaims{
-		"user_id":        user.ID,
-		"student_number": user.StudentNumber,
+		"user_id": user.ID,
+		"email":   user.Email,
 	}
 
 	token, err := jwt.CreateToken(claims, viper.GetString("JWT_SECRET_USER"))
@@ -41,6 +41,10 @@ func (ctl *Controller) Login(ctx *gin.Context) {
 		FirstName:     user.FirstName,
 		LastName:      user.LastName,
 		StudentNumber: user.StudentNumber,
+		Email:         user.Email,
+		Phone:         user.Phone,
+		Address:       user.Address,
+		Role:          user.Role, // ส่ง role กลับไปด้วย
 	}
 
 	// ตั้งค่า cookie สำหรับ token

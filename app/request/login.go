@@ -1,6 +1,6 @@
 package request
 
 type LoginRequest struct {
-	StudentNumber    string `json:"student_number"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }

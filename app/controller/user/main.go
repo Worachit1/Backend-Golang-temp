@@ -1,4 +1,4 @@
-package registration
+package user
 
 import "github.com/uptrace/bun"
 
@@ -9,7 +9,7 @@ type Controller struct {
 
 func NewController(db *bun.DB) *Controller {
 	return &Controller{
-		Name:    `registration-ctl`,
+		Name:    `user-ctl`,
 		Service: NewService(db),
 	}
 }

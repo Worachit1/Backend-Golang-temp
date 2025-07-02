@@ -2,6 +2,7 @@ package jwt
 
 import (
 	"errors"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
@@ -48,6 +49,35 @@ func VerifyToken(raw string) (map[string]any, error) {
 }
 
 func CreateToken(claims jwt.MapClaims, secretKey string) (string, error) {
+	// Set expiration time from config
+	duration := viper.GetDuration("TOKEN_DURATION_USER")
+	if duration == 0 {
+		duration = 24 * time.Hour // Default to 24 hours if not set
+	}
+	
+	// Add expiration time to claims
+	claims["exp"] = time.Now().Add(duration).Unix()
+	claims["iat"] = time.Now().Unix() // Issued at time
+
+	// Create a new token object
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	// Generate encoded token and send it as response
+	secret := []byte(secretKey)
+	tokenString, err := token.SignedString(secret)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
+}
+
+// CreateTokenWithDuration creates a token with custom duration
+func CreateTokenWithDuration(claims jwt.MapClaims, secretKey string, duration time.Duration) (string, error) {
+	// Add expiration time to claims
+	claims["exp"] = time.Now().Add(duration).Unix()
+	claims["iat"] = time.Now().Unix() // Issued at time
+
 	// Create a new token object
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 

@@ -1,4 +1,4 @@
-package registration
+package officers
 
 import (
 	"app/app/request"
@@ -8,11 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
 func (ctl *Controller) Create(ctx *gin.Context) {
-	body := request.CreateRegistration{}
+	body := request.CreateOfficer{}
 
 	if err := ctx.Bind(&body); err != nil {
-		logger.Errf(err.Error())
 		response.BadRequest(ctx, err.Error())
 		return
 	}
@@ -32,16 +32,16 @@ func (ctl *Controller) Create(ctx *gin.Context) {
 }
 
 func (ctl *Controller) Update(ctx *gin.Context) {
-	ID := request.GetByIDRegistration{}
+	ID := request.GetByIdOfficer{}
 	if err := ctx.BindUri(&ID); err != nil {
-		logger.Errf(err.Error())
+		logger.Err(err.Error())
 		response.BadRequest(ctx, err.Error())
 		return
 	}
 
-	body := request.UpdateRegistration{}
+	body := request.UpdateOfficer{}
 	if err := ctx.Bind(&body); err != nil {
-		logger.Errf(err.Error())
+		logger.Err(err.Error())
 		response.BadRequest(ctx, err.Error())
 		return
 	}
@@ -56,23 +56,22 @@ func (ctl *Controller) Update(ctx *gin.Context) {
 		response.InternalError(ctx, ms)
 		return
 	}
-
 	response.Success(ctx, nil)
 }
 
 func (ctl *Controller) List(ctx *gin.Context) {
-	req := request.ListRegistration{}
+	req := request.ListOfficer{}
 	if err := ctx.Bind(&req); err != nil {
-		logger.Errf(err.Error())
+		logger.Err(err.Error())
 		response.BadRequest(ctx, err.Error())
 		return
 	}
 
-	if req.Page == 0 {
+	if req.Page <= 0 {
 		req.Page = 1
 	}
 
-	if req.Size == 0 {
+	if req.Size <= 0 {
 		req.Size = 10
 	}
 
@@ -90,13 +89,14 @@ func (ctl *Controller) List(ctx *gin.Context) {
 		response.InternalError(ctx, err.Error())
 		return
 	}
+
 	response.SuccessWithPaginate(ctx, data, req.Size, req.Page, total)
 }
 
 func (ctl *Controller) Get(ctx *gin.Context) {
-	ID := request.GetByIDRegistration{}
+	ID := request.GetByIdOfficer{}
 	if err := ctx.BindUri(&ID); err != nil {
-		logger.Errf(err.Error())
+		logger.Err(err.Error())
 		response.BadRequest(ctx, err.Error())
 		return
 	}
@@ -111,9 +111,9 @@ func (ctl *Controller) Get(ctx *gin.Context) {
 }
 
 func (ctl *Controller) Delete(ctx *gin.Context) {
-	ID := request.GetByIDRegistration{}
+	ID := request.GetByIdOfficer{}
 	if err := ctx.BindUri(&ID); err != nil {
-		logger.Errf(err.Error())
+		logger.Err(err.Error())
 		response.BadRequest(ctx, err.Error())
 		return
 	}

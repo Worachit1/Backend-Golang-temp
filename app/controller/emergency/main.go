@@ -1,4 +1,4 @@
-package student
+package emergency
 
 import "github.com/uptrace/bun"
 
@@ -9,7 +9,7 @@ type Controller struct {
 
 func NewController(db *bun.DB) *Controller {
 	return &Controller{
-		Name:    `student-ctl`,
+		Name:    `emergency-ctl`,
 		Service: NewService(db),
 	}
 }

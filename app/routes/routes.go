@@ -34,14 +34,17 @@ func Router(app *gin.Engine) {
 		AllowFiles:             false,
 	}))
 
+	// Serve static files
+	app.Static("/web", "./web")
+	app.Static("/uploads", "./uploads")
+
 	// Create a new group for /api/v1
 	apiV1 := app.Group("/api/v1")
 
 	// Define groups of routes under /api/v1
-	Student(apiV1.Group("/students"))
-	Activity(apiV1.Group("/activities"))
-	Registration(apiV1.Group("/registrations"))
 	Login(apiV1.Group("/login"))
 	Logout(apiV1.Group("/logout"))
-
+	User(apiV1.Group("/users"))
+	Officer(apiV1.Group("/officers"))
+	Emergency(apiV1.Group("/emergencies"))
 }

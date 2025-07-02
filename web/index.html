@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบแจ้งเหตุฉุกเฉิน</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-exclamation-triangle"></i> ระบบแจ้งเหตุฉุกเฉิน</h1>
+                <div class="user-info">
+                    <span>สวัสดี, ผู้ใช้งาน</span>
+                    <button class="btn-logout"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('report')">
+                <i class="fas fa-plus-circle"></i> แจ้งเหตุฉุกเฉิน
+            </button>
+            <button class="tab-btn" onclick="showTab('manage')">
+                <i class="fas fa-list"></i> จัดการเหตุฉุกเฉิน
+            </button>
+            <button class="tab-btn" onclick="showTab('history')">
+                <i class="fas fa-history"></i> ประวัติการแจ้ง
+            </button>
+        </nav>
+
+        <!-- Report Emergency Tab -->
+        <div id="report-tab" class="tab-content active">
+            <div class="form-container">
+                <h2><i class="fas fa-fire"></i> แจ้งเหตุฉุกเฉิน</h2>
+                <form id="emergency-form" class="emergency-form">
+                    <div class="form-group">
+                        <label for="user_id">รหัสผู้แจ้ง:</label>
+                        <input type="text" id="user_id" name="user_id" required placeholder="b3a8f2ac-1234-4d55-a7f6-xxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type">ประเภทเหตุฉุกเฉิน:</label>
+                        <select id="type" name="type" required>
+                            <option value="">เลือกประเภทเหตุ</option>
+                            <option value="ไฟไหม้">🔥 ไฟไหม้</option>
+                            <option value="อุบัติเหตุ">🚗 อุบัติเหตุ</option>
+                            <option value="ทะเลาะวิวาท">⚔️ ทะเลาะวิวาท</option>
+                            <option value="ลักขโมย">🔓 ลักขโมย</option>
+                            <option value="แก๊สรั่ว">💨 แก๊สรั่ว</option>
+                            <option value="น้ำท่วม">🌊 น้ำท่วม</option>
+                            <option value="อื่นๆ">📋 อื่นๆ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">หัวข้อ:</label>
+                        <input type="text" id="title" name="title" required placeholder="เช่น เกิดเพลิงไหม้ที่โรงอาหาร">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">รายละเอียด:</label>
+                        <textarea id="description" name="description" required placeholder="อธิบายสถานการณ์โดยละเอียด..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">สถานที่:</label>
+                        <input type="text" id="location" name="location" required placeholder="เช่น อาคาร 3 ชั้น 2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="map_link">ลิงก์แผนที่ (ไม่บังคับ):</label>
+                        <input type="url" id="map_link" name="map_link" placeholder="https://maps.google.com/xxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">รูปภาพประกอบ (ไม่บังคับ):</label>
+                        <input type="file" id="file" name="file" accept="image/*">
+                        <div class="file-preview" id="file-preview"></div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> ส่งรายงาน
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Manage Emergency Tab (Officer) -->
+        <div id="manage-tab" class="tab-content">
+            <div class="manage-container">
+                <h2><i class="fas fa-shield-alt"></i> จัดการเหตุฉุกเฉิน (เจ้าหน้าที่)</h2>
+                
+                <div class="emergency-list">
+                    <div class="emergency-card pending">
+                        <div class="card-header">
+                            <span class="emergency-type">🔥 ไฟไหม้</span>
+                            <span class="status-badge pending">รอการตอบสนอง</span>
+                        </div>
+                        <h3>เกิดเพลิงไหม้ที่โรงอาหาร</h3>
+                        <p class="description">เห็นควันและกลิ่นไหม้</p>
+                        <div class="emergency-details">
+                            <span><i class="fas fa-map-marker-alt"></i> อาคาร 3 ชั้น 2</span>
+                            <span><i class="fas fa-clock"></i> 5 นาทีที่แล้ว</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-action accept" onclick="updateEmergency('emergency-id', 'กำลังดำเนินการ')">
+                                <i class="fas fa-check"></i> รับเรื่อง
+                            </button>
+                            <button class="btn-action view" onclick="viewDetails('emergency-id')">
+                                <i class="fas fa-eye"></i> ดูรายละเอียด
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="emergency-card in-progress">
+                        <div class="card-header">
+                            <span class="emergency-type">🚗 อุบัติเหตุ</span>
+                            <span class="status-badge in-progress">กำลังดำเนินการ</span>
+                        </div>
+                        <h3>รถชนกันที่ลานจอดรถ</h3>
+                        <p class="description">รถยนต์ 2 คันชนกัน มีผู้บาดเจ็บ</p>
+                        <div class="emergency-details">
+                            <span><i class="fas fa-map-marker-alt"></i> ลานจอดรถ A</span>
+                            <span><i class="fas fa-clock"></i> 15 นาทีที่แล้ว</span>
+                            <span><i class="fas fa-user"></i> เจ้าหน้าที่ A</span>
+                        </div>
+                        <div class="action-form">
+                            <textarea placeholder="บันทึกการดำเนินการ..." rows="3"></textarea>
+                            <div class="form-actions">
+                                <button class="btn-action update">
+                                    <i class="fas fa-edit"></i> อัปเดต
+                                </button>
+                                <button class="btn-action complete">
+                                    <i class="fas fa-check-circle"></i> เสร็จสิ้น
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="history-tab" class="tab-content">
+            <div class="history-container">
+                <h2><i class="fas fa-history"></i> ประวัติการแจ้งเหตุฉุกเฉิน</h2>
+                
+                <div class="filter-section">
+                    <div class="filters">
+                        <select class="filter-select">
+                            <option value="">ประเภทเหตุ</option>
+                            <option value="ไฟไหม้">ไฟไหม้</option>
+                            <option value="อุบัติเหตุ">อุบัติเหตุ</option>
+                        </select>
+                        <select class="filter-select">
+                            <option value="">สถานะ</option>
+                            <option value="รอการตอบสนอง">รอการตอบสนอง</option>
+                            <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                            <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+                        </select>
+                        <input type="text" class="search-input" placeholder="ค้นหา...">
+                    </div>
+                </div>
+
+                <div class="history-list">
+                    <div class="history-item completed">
+                        <div class="item-info">
+                            <span class="emergency-type">🔥 ไฟไหม้</span>
+                            <h4>เกิดเพลิงไหม้ที่โรงอาหาร</h4>
+                            <p>อาคาร 3 ชั้น 2</p>
+                        </div>
+                        <div class="item-status">
+                            <span class="status-badge completed">เสร็จสิ้น</span>
+                            <span class="date">2 ชั่วโมงที่แล้ว</span>
+                        </div>
+                    </div>
+
+                    <div class="history-item completed">
+                        <div class="item-info">
+                            <span class="emergency-type">🚗 อุบัติเหตุ</span>
+                            <h4>รถชนกันที่ลานจอดรถ</h4>
+                            <p>ลานจอดรถ A</p>
+                        </div>
+                        <div class="item-status">
+                            <span class="status-badge completed">เสร็จสิ้น</span>
+                            <span class="date">1 วันที่แล้ว</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Detail Modal -->
+    <div id="emergency-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>รายละเอียดเหตุฉุกเฉิน</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="detail-section">
+                    <h4>ข้อมูลเหตุการณ์</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>ประเภท:</label>
+                            <span>🔥 ไฟไหม้</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>สถานะ:</label>
+                            <span class="status-badge in-progress">กำลังดำเนินการ</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>สถานที่:</label>
+                            <span>อาคาร 3 ชั้น 2</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>เวลาแจ้ง:</label>
+                            <span>15:30 น. วันที่ 2 ก.ค. 2568</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>รายละเอียด</h4>
+                    <p>เห็นควันและกลิ่นไหม้ออกมาจากห้องครัว พบเปลวไฟเล็กๆ</p>
+                </div>
+
+                <div class="detail-section">
+                    <h4>การดำเนินการ</h4>
+                    <div class="action-log">
+                        <div class="log-item">
+                            <span class="log-time">15:35</span>
+                            <span class="log-text">เจ้าหน้าที่รับเรื่องแล้ว</span>
+                        </div>
+                        <div class="log-item">
+                            <span class="log-time">15:40</span>
+                            <span class="log-text">ทีมดับเพลิงไปถึงที่เกิดเหตุ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
